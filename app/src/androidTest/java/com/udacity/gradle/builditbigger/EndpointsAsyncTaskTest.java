@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.concurrent.CountDownLatch;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
@@ -55,5 +56,21 @@ public class EndpointsAsyncTaskTest{
 
         // test that response has been set after calling task
         assertNotNull(response);
+    }
+
+    @Test
+    public void whenTaskIsCalled_thenAValidStringIsReturn() {
+        // test that is null initially
+        assertNull(response);
+        task.execute();
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // test that response has been set after calling task
+        assertFalse("String 'Connect timed out' has been returned", response.equals("connect timed out"));
     }
 }
