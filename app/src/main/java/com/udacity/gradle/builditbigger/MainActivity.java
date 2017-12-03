@@ -1,7 +1,9 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +14,7 @@ import uk.me.desiderio.javajokes.Joker;
 import uk.me.desiderio.jokedisplay.JokeDisplayActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointTaskListener {
     private Joker joker;
 
     @Override
@@ -47,14 +49,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        String joke = joker.getNextJoke();
+        new EndpointsAsyncTask(this).execute();
+    }
 
+
+    @Override
+    public void onJokeApiResponse(String joke) {
         Intent intent = new Intent(this, JokeDisplayActivity.class);
         intent.putExtra(JokeDisplayActivity.EXTRA_JOKE, joke);
         startActivity(intent);
 
-        Toast.makeText(this, joke, Toast.LENGTH_SHORT).show();
     }
-
-
 }
