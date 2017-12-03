@@ -1,23 +1,25 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import uk.me.desiderio.javajokes.Joker;
 import uk.me.desiderio.jokedisplay.JokeDisplayActivity;
 
 
 public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointTaskListener {
+    
+    private static final String TAG = MainActivity.class.getSimpleName();
+    
+
     private ProgressBar progressBar;
     private View buttonContainerView;
+    private String joke;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +61,24 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     public void tellJoke(View view) {
         new EndpointsAsyncTask(this).execute();
         showProgressBar();
-    }
+        showInterstitialAd();
 
+    }
 
     @Override
     public void onJokeApiResponse(String joke) {
-        Intent intent = new Intent(this, JokeDisplayActivity.class);
-        intent.putExtra(JokeDisplayActivity.EXTRA_JOKE, joke);
-        startActivity(intent);
+        this.joke = joke;
+        if(!isInterstitialAdShowing()) {
+            showJoke();
+        }
+    }
+
+    public void showJoke() {
+            Intent intent = new Intent(this, JokeDisplayActivity.class);
+            intent.putExtra(JokeDisplayActivity.EXTRA_JOKE, joke);
+            startActivity(intent);
+
+            joke = null;
 
     }
 
@@ -75,9 +87,23 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
         buttonContainerView.setVisibility(View.GONE);
     }
 
-
     private void showJokeButton() {
         progressBar.setVisibility(View.GONE);
         buttonContainerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showInterstitialAd() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.jokes_fragment);
+        if(fragment instanceof InterstitialAdProvided) {
+            ((InterstitialAdProvided) fragment).showInterstitialAd();
+        }
+    }
+
+    private boolean isInterstitialAdShowing() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.jokes_fragment);
+        if(fragment instanceof InterstitialAdProvided) {
+             return ((InterstitialAdProvided) fragment).isAdShowing();
+        }
+        return false;
     }
 }
