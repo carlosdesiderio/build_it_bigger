@@ -16,7 +16,7 @@ import com.google.android.gms.ads.InterstitialAd;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements InterstitialAdProvided {
+public class MainActivityFragment extends Fragment implements InterstitialAdProvider {
 
     private static final String TAG = MainActivityFragment.class.getSimpleName();
 
@@ -35,7 +35,7 @@ public class MainActivityFragment extends Fragment implements InterstitialAdProv
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        AdView mAdView = (AdView) root.findViewById(R.id.adView);
+        AdView mAdView = root.findViewById(R.id.adView);
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
@@ -44,20 +44,20 @@ public class MainActivityFragment extends Fragment implements InterstitialAdProv
                 .build();
         mAdView.loadAd(adRequest);
 
-        initInterstitialAd();
+       initInterstitialAd();
 
         return root;
     }
 
     private void initInterstitialAd() {
         interstitialAd = new InterstitialAd(getContext());
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
         interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
-                Log.d(TAG, "onAdLoaded: orange");
+                Log.d(TAG, "onAdLoaded: ");
                 if(isRequestInProcess) {
                     interstitialAd.show();
                 }
@@ -66,13 +66,13 @@ public class MainActivityFragment extends Fragment implements InterstitialAdProv
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
-                Log.d(TAG, "onAdFailedToLoad: orange");
+                Log.d(TAG, "onAdFailedToLoad: " + errorCode);
             }
 
             @Override
             public void onAdOpened() {
                 // Code to be executed when the ad is displayed.
-                Log.d(TAG, "onAdOpened: orange");
+                Log.d(TAG, "onAdOpened: ");
                 isRequestInProcess = false;
                 isAddShowing = true;
             }
@@ -80,14 +80,14 @@ public class MainActivityFragment extends Fragment implements InterstitialAdProv
             @Override
             public void onAdLeftApplication() {
                 // Code to be executed when the user has left the app.
-                Log.d(TAG, "onAdLeftApplication: orange");
+                Log.d(TAG, "onAdLeftApplication: ");
             }
 
             @Override
             public void onAdClosed() {
                 // Code to be executed when when the interstitial ad is closed.
                 // Load the next interstitial.
-                Log.d(TAG, "onAdClosed: orange");
+                Log.d(TAG, "onAdClosed: ");
                 isAddShowing = false;
                 ((MainActivity) getActivity()).showJoke();
                 interstitialAd.loadAd(new AdRequest.Builder().build());
@@ -96,7 +96,7 @@ public class MainActivityFragment extends Fragment implements InterstitialAdProv
         });
     }
 
-    // InterstitialAdProvided implementation
+    // InterstitialAdProvider implementation
 
     @Override
     public void showInterstitialAd() {

@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
- * A placeholder fragment containing a simple view.
+ * A fragment to show paid version of the main view without ads.
  */
 public class MainActivityFragment extends Fragment {
 

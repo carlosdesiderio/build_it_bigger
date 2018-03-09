@@ -13,9 +13,6 @@ import uk.me.desiderio.jokedisplay.JokeDisplayActivity;
 
 
 public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointTaskListener {
-    
-    private static final String TAG = MainActivity.class.getSimpleName();
-    
 
     private ProgressBar progressBar;
     private View buttonContainerView;
@@ -94,15 +91,15 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
 
     private void showInterstitialAd() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.jokes_fragment);
-        if(fragment instanceof InterstitialAdProvided) {
-            ((InterstitialAdProvided) fragment).showInterstitialAd();
+        if(fragment instanceof InterstitialAdProvider) {
+            ((InterstitialAdProvider) fragment).showInterstitialAd();
         }
     }
 
     private boolean isInterstitialAdShowing() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.jokes_fragment);
-        if(fragment instanceof InterstitialAdProvided) {
-             return ((InterstitialAdProvided) fragment).isAdShowing();
+        if(fragment instanceof InterstitialAdProvider) {
+             return ((InterstitialAdProvider) fragment).isAdShowing();
         }
         return false;
     }

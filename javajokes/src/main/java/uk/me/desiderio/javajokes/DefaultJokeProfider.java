@@ -3,7 +3,8 @@ package uk.me.desiderio.javajokes;
 /**
  * Provides 15 funniest jokes from the fringe festival
  *
- * Jokes from https://inews.co.uk/distractions/humour/15-funniest-jokes-edinburgh-fringe-festival-list-full/
+ * Jokes from
+ * https://inews.co.uk/distractions/humour/15-funniest-jokes-edinburgh-fringe-festival-list-full/
  */
 
 public class DefaultJokeProfider implements JokeProvider{

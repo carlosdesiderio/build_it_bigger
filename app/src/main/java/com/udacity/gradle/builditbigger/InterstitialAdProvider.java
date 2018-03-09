@@ -6,7 +6,7 @@ package com.udacity.gradle.builditbigger;
  *  Activity can interact with fragment accordingly depending whether is implementing this interface
  */
 
-public interface InterstitialAdProvided {
+public interface InterstitialAdProvider {
     void showInterstitialAd();
     boolean isAdShowing();
 }

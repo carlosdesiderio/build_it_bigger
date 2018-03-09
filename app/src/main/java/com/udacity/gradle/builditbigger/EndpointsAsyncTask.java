@@ -64,7 +64,7 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground: entering ");
         if(myApiService == null) {  // Only do this once
-            String rootUrl = getRootUrlStringByType(SERVER_TYPE_TEST);
+            String rootUrl = getRootUrlStringByType(SERVER_TYPE_LIVE);
 
             Jokes.Builder builder = new Jokes.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)

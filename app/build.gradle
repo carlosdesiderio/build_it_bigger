@@ -37,20 +37,16 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.google.code.findbugs'
-    })
-    implementation 'com.android.support:appcompat-v7:27.0.1'
-
-    freeImplementation 'com.google.android.gms:play-services-ads:11.6.0'
-    implementation project(path: ':javajokes')
     implementation project(path: ':jokedisplay')
+    implementation 'com.android.support:appcompat-v7:27.1.0'
 
-    implementation 'com.google.http-client:google-http-client-android:1.23.0'
-    implementation project(path: ':javajokes')
-    implementation project(path: ':jokedisplay')
-    endpointsServer project(path: ':backend_v2', configuration: 'endpoints')
+    // gc endpoint dependency
     implementation 'com.google.api-client:google-api-client:1.23.0'
 
+    // admob dependency
+    implementation 'com.google.android.gms:play-services-ads:11.8.0'
+    implementation 'com.google.http-client:google-http-client-android:1.23.0'
+    endpointsServer project(path: ':backend_v2', configuration: 'endpoints')
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
 }

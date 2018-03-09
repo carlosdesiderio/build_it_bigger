@@ -19,8 +19,5 @@ public class Joker {
     public String getNextJoke() {
         int index = random.nextInt(jokes.length);
         return jokes[index];
-
     }
-
-    // TODO provide method returning observable
 }

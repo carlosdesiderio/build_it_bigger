@@ -29,14 +29,20 @@ allprojects {
 task runDaemonServerAndroidTest {
     description "Start appengine server to run test. Server is stopped when test are ended"
 
+    /**
+     * appengineStart starts running the App Engine development server asynchronously and then returns
+     * to the command line.
+     *
+     * Version 2 of the appengine plugin doesn't expose the daemon property
+     */
+    
+    dependsOn ':backend_v2:appengineStart', ':app:connectedAndroidTest', ':backend_v2:appengineStop'
+
     afterEvaluate {
-        println 'A message ' + tasks.findByPath(':app:connectedAndroidTest')
         if(tasks.findByPath(':app:connectedAndroidTest') != null) {
-            println 'A message : we are in ' + tasks.findByPath(':backend_v2:appengineStart')
 
             tasks.findByPath(':backend_v2:appengineStart').finalizedBy ':backend_v2:appengineStop'
             tasks.findByPath(':app:connectedAndroidTest').mustRunAfter ':backend_v2:appengineStart'
         }
     }
-    dependsOn ':backend_v2:appengineStart', ':app:connectedAndroidTest', ':backend_v2:appengineStop'
 }
