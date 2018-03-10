@@ -1,146 +1,104 @@
-# Gradle for Android and Java Final Project
+# Build It Bigger Project
+Udacity Android Nanodegree Project FOUR submission : Gradle for Android project
 
-In this project, you will create an app with multiple flavors that uses
-multiple libraries and Google Cloud Endpoints. The finished app will consist
-of four modules. A Java library that provides jokes, a Google Cloud Endpoints
-(GCE) project that serves those jokes, an Android Library containing an
-activity for displaying jokes, and an Android app that fetches jokes from the
-GCE module and passes them to the Android Library for display.
+## Project Specification
 
-## Why this Project
+In this project, an app is created with multiple flavours that uses
+multiple libraries and Google Cloud Endpoints. The app consists
+of four modules:
+* ["javajokes"](/javajokes) :<br /> A Java library that provides jokes. The main module
+ has 
+ a project dependency between the app and the new Java Library. 
+* ["jokedisplay"](/jokedisplay) :<br /> An Android Library containing an activity for displaying jokes. 
+The main module has a project dependency between the app and the new Android Library. 
+ When the button is selected a joke from the Java Library is passed to the Android Library to be displayed. 
+* [backend_v2](/backend_v2) :<br /> A Google Cloud Endpoints (GCE) project that serves those 
+jokes. The main module has a project dependency between the app and the GCE module. An Async task
+ is used to retrieve jokes from the App Engine.
+* [app](/app):<br /> An Android app that fetches jokes from the GCE module and passes them to the Android Library 
+for display. <br /> <br /> 
+The project also has the following features:<br /> 
+* Connected tests to verify that the async task is loading jokes.
+* Project contains paid/free flavors. The paid flavor has no ads.
 
-As Android projects grow in complexity, it becomes necessary to customize the
-behavior of the Gradle build tool, allowing automation of repetitive tasks.
-Particularly, factoring functionality into libraries and creating product
-flavors allow for much bigger projects with minimal added complexity.
 
-## What Will I Learn?
+###Initial code 
+The initial code can be found in the
+[course repository](https://github.com/udacity/ud867/tree/master/FinalProject).
 
-You will learn the role of Gradle in building Android Apps and how to use
-Gradle to manage apps of increasing complexity. You'll learn to:
 
-* Add free and paid flavors to an app, and set up your build to share code between them
-* Factor reusable functionality into a Java library
-* Factor reusable Android functionality into an Android library
-* Configure a multi project build to compile your libraries and app
-* Use the Gradle App Engine plugin to deploy a backend
-* Configure an integration test suite that runs against the local App Engine development server
+### Other Project Components
 
-## How Do I Complete this Project?
+#### Google Cloud Endpoint & AppEngine Module:
 
-### Step 0: Starting Point
+The initial request was for a Google Cloud Endpoints Module to be created in the Android Studio IDE. However, at the 
+moment of development and
+ starting from Android Studio 3.0, the ability to create an App Engine backends had been 
+ removed. 
+ 
+ Several changes to the GCE module gradle files have to be carried out in order to transition the 
+ project to the new framework version. Instruction at the
+ [Transition Android 
+  Projects readme page](https://github.com/GoogleCloudPlatform/endpoints-framework-gradle-plugin/blob/master/ANDROID_README.md#transitioning-android-projects)
+  were followed.
 
-This is the starting point for the final project, which is provided to you in
-the [course repository](https://github.com/udacity/ud867/tree/master/FinalProject). It
-contains an activity with a banner ad and a button that purports to tell a
-joke, but actually just complains. The banner ad was set up following the
-instructions here:
+ The library was deployed using the App Engine Plugin at the terminal using the following 
+ resources:
+ * [App Engine Plugin readme pages](https://github.com/GoogleCloudPlatform/app-gradle-plugin)
+ * [App Engine Standard & Google Cloud 
+ Endpoints Frameworks & Java readme pages](https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/appengine-java8/endpoints-v2-backend)
+ 
 
-https://developers.google.com/mobile-ads-sdk/docs/admob/android/quick-start
+#### Interstitial Ad
 
-You may need to download the Google Repository from the Extras section of the
-Android SDK Manager.
+The free app variant display interstitial ads between the main activity and the joke activity
 
-You will also notice a folder called backend in the starter code. 
-It will be used in step 3 below, and you do not need to worry about it for now.
+#### Loading Indicator
 
-When you can build an deploy this starter code to an emulator, you're ready to
-move on.
+A loading indicator is shown while the joke is being retrieved and
+disappears when the joke is ready.
 
-### Step 1: Create a Java library
+#### Functional Tests and Configuring a Test Task
 
-Your first task is to create a Java library that provides jokes. Create a new
-Gradle Java project either using the Android Studio wizard, or by hand. Then
-introduce a project dependency between your app and the new Java Library. If
-you need review, check out demo 4.01 from the course code.
+A connected test was implemented to check that the async task successfully retrieves a non-empty
+string. 
 
-Make the button display a toast showing a joke retrieved from your Java joke
-telling library.
-
-### Step 2: Create an Android Library
-
-Create an Android Library containing an Activity that will display a joke
-passed to it as an intent extra. Wire up project dependencies so that the
-button can now pass the joke from the Java Library to the Android Library.
-
-For review on how to create an Android library, check out demo 4.03. For a
-refresher on intent extras, check out;
-
-http://developer.android.com/guide/components/intents-filters.html
-
-### Step 3: Create GCE Module
-
-This next task will be pretty tricky. Instead of pulling jokes directly from
-our Java library, we'll set up a Google Cloud Endpoints development server,
-and pull our jokes from there. 
-
-The following tutorial explains how to add and use a Google Cloud Endpoints module in 
-your project. The starter code already includes the module in the folder called backend.
-Therefore, you can skip the creation steps in the tutorial and start at section
-1.1 *Debugging the backend locally*:
-
-https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloEndpoints
-
-Introduce a project dependency between your Java library and your GCE module,
-and modify the GCE starter code to pull jokes from your Java library. Create
-an Async task to retrieve jokes. Make the button kick off a task to retrieve a
-joke, then launch the activity from your Android Library to display it.
-
-### Step 4: Add Functional Tests
-
-Add code to test that your Async task successfully retrieves a non-empty
-string. For a refresher on setting up Android tests, check out demo 4.09.
-
-### Step 5: Add a Paid Flavor
-
-Add free and paid product flavors to your app. Remove the ad (and any
-dependencies you can) from the paid flavor.
-
-## Optional Tasks
-
-For extra practice to make your project stand out, complete the following tasks.
-
-### Add Interstitial Ad
-
-Follow these instructions to add an interstitial ad to the free version.
-Display the ad after the user hits the button, but before the joke is shown.
-
-https://developers.google.com/mobile-ads-sdk/docs/admob/android/interstitial
-
-### Add Loading Indicator
-
-Add a loading indicator that is shown while the joke is being retrieved and
-disappears when the joke is ready. The following tutorial is a good place to
-start:
-
-http://www.tutorialspoint.com/android/android_loading_spinner.htm
-
-### Configure Test Task
-
-To tie it all together, create a Gradle task that:
-
+Also a Gradle task was added to run test locally using the GCE dev server. The 
+[runDaemonServerAndroidTest](https://github.com/carlosdesiderio/build_it_bigger/blob/8526f438cd11f799cd7400168736a6282242b42a/build.gradle#L29) 
+task carries out the following:
 1. Launches the GCE local development server
 2. Runs all tests
 3. Shuts the server down again
 
-# Rubric
+To run the task, use the following command from the project root folder:
 
-### Required Components
+```text
+$ ./gradlew runDaemonServerAndroidTest
+```
+#### Libraries
+This is a list of the 
+Google Cloud libraries used in the project:
 
-* Project contains a Java library for supplying jokes
-* Project contains an Android library with an activity that displays jokes passed to it as intent extras.
-* Project contains a Google Cloud Endpoints module that supplies jokes from the Java library. Project loads jokes from GCE module via an async task.
-* Project contains connected tests to verify that the async task is indeed loading jokes.
-* Project contains paid/free flavors. The paid flavor has no ads, and no unnecessary dependencies.
+**Admob libraries**
+```text
+    play-services-ads
+    google-http-client-android
+```
+**GC Endpoint Framework v2 libraries for appengine deployment**<br />
+   ```text
+    endpoints-framework
+    endpoints-management-control-appengine
+    endpoints-framework-auth
+```
+* **GC Endpoint Framework v2 client libraries**
+```text
+    google-api-client
+    google-http-client-android
+```
 
-### Required Behavior
+For a list of support and other Android libraries, see the 
+[build.gradle](app/build.gradle)file
 
-* App retrieves jokes from Google Cloud Endpoints module and displays them via an Activity from the Android Library.
+### Contact:
+labs@desiderio.me.uk
 
-### Optional Components
-
-Once you have a functioning project, consider adding more features to test your Gradle and Android skills. Here are a few suggestions:
-
-* Make the free app variant display interstitial ads between the main activity and the joke-displaying activity.
-* Have the app display a loading indicator while the joke is being fetched from the server.
-* Write a Gradle task that starts the GCE dev server, runs all the Android tests, and shuts down the dev server.
