@@ -44,8 +44,9 @@ dependencies {
     implementation 'com.google.api-client:google-api-client:1.23.0'
 
     // admob dependency
-    implementation 'com.google.android.gms:play-services-ads:11.8.0'
+    freeImplementation 'com.google.android.gms:play-services-ads:11.8.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
+
     endpointsServer project(path: ':backend_v2', configuration: 'endpoints')
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
