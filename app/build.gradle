@@ -15,9 +15,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            ext {
+                // this can be set as needed during dev
+                isServerLive = false
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            ext {
+                // never change this
+                isServerLive = true
+            }
         }
     }
 
@@ -31,6 +42,17 @@ android {
             applicationId "uk.me.desiderio.builditbigger.paid"
             versionName "1.0-paid"
         }
+    }
+
+    buildTypes.each {
+        if(it.ext.isServerLive) {
+            it.buildConfigField 'String', 'ENDPOINT_SERVER_URL_STRING',
+                    "\"https://desjokesapi.appspot.com/_ah/api/\""
+        } else {
+            it.buildConfigField 'String', 'ENDPOINT_SERVER_URL_STRING',
+                    "\"http://10.0.2.2:8080/_ah/api/\""
+        }
+
     }
 }
 

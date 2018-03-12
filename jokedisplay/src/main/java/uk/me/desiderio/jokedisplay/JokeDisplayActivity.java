@@ -25,7 +25,9 @@ public class JokeDisplayActivity extends AppCompatActivity {
 
         TextView jokeTextView = findViewById(R.id.jokeTextView);
 
-        jokeTextView.setText(joke);
+        if (joke != null && !joke.isEmpty()) {
+            jokeTextView.setText(joke);
+        }
     }
 
     @Override

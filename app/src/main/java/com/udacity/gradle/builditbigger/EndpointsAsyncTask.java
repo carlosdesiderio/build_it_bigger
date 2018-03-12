@@ -24,12 +24,6 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     private static final String TAG = EndpointTaskListener.class.getSimpleName();
 
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({SERVER_TYPE_TEST, SERVER_TYPE_LIVE})
-    @interface ServerType{};
-    private static final String SERVER_TYPE_LIVE = "live_server";
-    private static final String SERVER_TYPE_TEST = "test_server";
-
     private static Jokes myApiService = null;
     private EndpointTaskListener listener;
 
@@ -41,35 +35,15 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         this.listener = listener;
     }
 
-    private String getRootUrlStringByType(@ServerType String serverType) {
-        String urlString = null;
-
-        switch (serverType) {
-            case SERVER_TYPE_LIVE:
-                urlString = "https://desjokesapi.appspot.com/_ah/api/";
-                break;
-            case SERVER_TYPE_TEST:
-                /*
-                    options for running against local devappserver
-                    10.0.2.2 is localhost's IP address in Android emulator
-                    turn off compression when running against local devappserver
-                 */
-                urlString = "http://10.0.2.2:8080/_ah/api/";
-                break;
-        }
-        return urlString;
-    }
-
     @Override
     protected String doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground: entering ");
-        if(myApiService == null) {  // Only do this once
-            String rootUrl = getRootUrlStringByType(SERVER_TYPE_LIVE);
+        if(myApiService == null) {
 
             Jokes.Builder builder = new Jokes.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     .setApplicationName("desJokesApi")
-                    .setRootUrl(rootUrl)
+                    .setRootUrl(BuildConfig.ENDPOINT_SERVER_URL_STRING)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                 @Override
                 public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -82,7 +56,8 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         try {
             return myApiService.tellJoke().execute().getMessage();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e(TAG, e.getMessage(), e);
+            return null;
         }
     }
 
